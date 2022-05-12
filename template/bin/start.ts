@@ -8,8 +8,6 @@ let appParams: any = program //
    .parse(process.argv)
    .opts();
 
-(async () => {
-   console.info("====>>>start", appParams);
-   logger.info("test===", "ok", "xx");
-   logger.user.info("user print", "aaa");
-})();
+console.info("====>>>start", appParams);
+logger.info("test===", "ok", "xx");
+logger.user.info("user print", "aaa");

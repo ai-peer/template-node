@@ -14,13 +14,13 @@ const TerserPlugin = require("terser-webpack-plugin");
 const config = {
    entry: {
       cli: {
-         import: "./bin/proxy.ts",
+         import: "./bin/start.ts",
          filename: "cli.js",
       },
-/*       lib: {
+      lib: {
          import: "./src/index.ts",
          filename: "lib.js",
-      }, */
+      },
    },
    output: {
       path: path.resolve(__dirname, "dist"),
@@ -41,8 +41,8 @@ const config = {
       },
    },
    target: "node",
-   externals: {//扩展不直接加入打包
-      
+   externals: {
+      //扩展不直接加入打包
    },
    devServer: {
       open: false,

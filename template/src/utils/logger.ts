@@ -13,7 +13,7 @@ import path from "path";
 import mkdirs from "mkdirs";
 import pkg from "../../package.json";
 
-const logDir = Config.isDev ? path.resolve("") : path.join(os.homedir(), "." + pkg.name);
+const logDir = Config.isDev ? path.resolve("logs") : path.join(os.homedir(), pkg.name, "logs");
 mkdirs(logDir);
 console.info("logdir", logDir);
 
@@ -30,11 +30,11 @@ const log = winston.createLogger({
    defaultMeta: { service: "log" },
    transports: [
       new winston.transports.DailyRotateFile({
-         filename: "logs/log-%DATE%.log",
+         filename: path.join(logDir, "log-%DATE%.log"),
          level: "info",
       }),
       new winston.transports.DailyRotateFile({
-         filename: "logs/error-%DATE%.log",
+         filename: path.join(logDir, "error-%DATE%.log"),
          level: "error",
       }),
    ],
@@ -45,12 +45,13 @@ const logUser = winston.createLogger({
    format: logFormat,
    defaultMeta: { service: "user" },
    transports: [
+      new winston.transports.Console(),
       new winston.transports.DailyRotateFile({
-         filename: "logs/log-%DATE%.log",
+         filename: path.join(logDir, "log-%DATE%.log"),
          level: "info",
       }),
       new winston.transports.DailyRotateFile({
-         filename: "logs/error-%DATE%.log",
+         filename: path.join(logDir, "error-%DATE%.log"),
          level: "error",
       }),
    ],
