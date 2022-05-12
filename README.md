@@ -1,2 +1,1 @@
-# template-node
-一个简单的基于nodejs的webpack模板
+## 创建基于node 的webpack模板工程
