@@ -12,6 +12,7 @@ import os from "os";
 import path from "path";
 import mkdirs from "mkdirs";
 import pkg from "../../package.json";
+import querystring from 'querystring';
 
 const logDir = Config.isDev ? path.resolve("logs") : path.join(os.homedir(), pkg.name.replace(/^.*[\/]/, ""), "logs");
 mkdirs(logDir);
@@ -57,8 +58,15 @@ function buildWinLogger(serverName: string): Logger0 {
    return new Logger0(log);
 }
 
+
 function toString(args: any[]) {
-   return args[0];
+   let r = args
+      .map((v) => {
+         if (typeof v == "object") return querystring.stringify(v);
+         else return (v || "").toString().trim();
+      })
+      .join(" ");
+   return r;
 }
 class Logger0 {
    logger: any; //winston.Logger;
