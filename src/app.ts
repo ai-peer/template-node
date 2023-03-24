@@ -5,7 +5,7 @@ import koaBody from "koa-body";
 import koaBodyParser from "koa-bodyparser";
 import koaCors from "@koa/cors";
 import net from "net";
-import extendContext from "./core/context";
+import initContext from "./core/init.context";
 import { routerControllers } from "./annotation/router";
 import mkdirs from "mkdirs";
 import "./completed.dist";
@@ -26,7 +26,7 @@ export default class App {
       return this.app.listen(port, host, callback);
    }
    private async init(app: Koa) {
-      extendContext(app);
+      initContext(app);
 
       //后台请求路径修改
       app.use(async (ctx: Koa.Context, next) => {
@@ -59,7 +59,7 @@ export default class App {
          } catch (err) {
          } finally {
             const ttl = Date.now() - start;
-            if(ttl < 100){
+            if (ttl < 100) {
                if (/(options|delete)/i.test(method)) return;
                if (/^\/api\/(m|p)/i.test(ctx.path)) return;
             }
@@ -114,7 +114,7 @@ export default class App {
       //app.use(koaStatic(config.staticWWW));
       //app.use(koaStatic(config.staticRootPath));
 
-    /*   let req = new http.IncomingMessage(new Socket());
+      /*   let req = new http.IncomingMessage(new Socket());
       let res = new http.ServerResponse(req);
       let ctx: Context = <Context>app.createContext(req, res); */
    }
