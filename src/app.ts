@@ -30,6 +30,10 @@ export default class App {
 
       //后台请求路径修改
       app.use(async (ctx: Koa.Context, next) => {
+         if (/^[\/]{2,}/.test(ctx.url)) {
+            return ctx.redirect(ctx.url.replace(/^[\/]{2,}/, "/"));
+         }
+
          if (/^\/(\?.*)?$/.test(ctx.url)) {
             ctx.url = "/index.html";
          }

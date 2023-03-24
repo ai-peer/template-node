@@ -1,4 +1,4 @@
-import Api_Baseapi from './api/baseapi';
+import Api_Baseapi from './core/api';
 import Api_DemoApi from './api/demo.api';
 
 export const apiList = [
