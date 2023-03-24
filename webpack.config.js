@@ -1,4 +1,6 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
+const { createCompleted } = require("./src/utils/build.dist");
+createCompleted();
 
 const path = require("path");
 //const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -10,6 +12,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const FileManagerPlugin = require("filemanager-webpack-plugin"); //压缩zip
 const pkg = require("./package.json");
 const appName = (pkg.name||"").replace(/^[^\/]+\//, "");
+
 //const { createCompleted } = require("./src/utils/build.dist");
 //createCompleted();
 const config = {

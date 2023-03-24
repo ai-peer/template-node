@@ -5,4 +5,6 @@ export default {
    logger: isDev ? "debug" : "info",
    loggerDay: isDev ? "1d" : "30d",
    loggerSize: "20m",
+   staticWWW: "",
+   staticRootPath: ""
 };

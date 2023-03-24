@@ -13,6 +13,7 @@ import path from "path";
 import mkdirs from "mkdirs";
 import pkg from "../../package.json";
 import querystring from "querystring";
+import dayjs from "dayjs";
 
 const logDir = Config.isDev ? path.resolve("logs") : path.join(os.homedir(), pkg.name.replace(/^.*[\/]/, ""), "logs");
 mkdirs(logDir);
@@ -21,7 +22,7 @@ console.info("logdir", logDir);
 const logFormat = winston.format.combine(
    winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
    //winston.format.align(),
-   winston.format.printf((info) => `${info.timestamp} ${info.level} ${info.message}`),
+   winston.format.printf((info) => `${dayjs().format("YYYY-MM-DD HH:mm:ss")} ${info.level} ${info.message}`),
    //winston.format.json(),
 );
 
@@ -100,7 +101,7 @@ const accept = buildWinLogger("accept");
 /* const user = console;
 const accept = console;
 const log = console; */
-class Logger {
+export class Logger {
    user = user;
    accept = accept;
    info(...args) {
