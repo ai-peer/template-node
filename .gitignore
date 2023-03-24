@@ -12,6 +12,7 @@ yarn-error.log*
 database/
 dist/
 data/
+dist-ext/
 # Runtime data
 pids
 *.pid

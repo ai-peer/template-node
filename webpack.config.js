@@ -7,23 +7,20 @@ const path = require("path");
 const isProduction = process.env.NODE_ENV == "production";
 const webpack = require("webpack");
 const TerserPlugin = require("terser-webpack-plugin");
-//const CopyPlugin = require("copy-webpack-plugin");
-
+const FileManagerPlugin = require("filemanager-webpack-plugin"); //压缩zip
+const pkg = require("./package.json");
+const appName = (pkg.name||"").replace(/^[^\/]+\//, "");
 //const { createCompleted } = require("./src/utils/build.dist");
 //createCompleted();
 const config = {
    entry: {
       cli: {
          import: "./bin/start.ts",
-         filename: "cli.js",
-      },
-      lib: {
-         import: "./src/index.ts",
-         filename: "lib.js",
-      },
+         filename: "dist/service.js",
+      }
    },
    output: {
-      path: path.resolve(__dirname, "dist"),
+      path: path.resolve(__dirname, "dist-ext"),
       clean: {
          keep: /\/ignored\//, // 保留 'ignored/dir' 下的静态资源
       },
@@ -95,22 +92,39 @@ const config = {
       //new VueLoaderPlugin(),
       // Add your plugins here
       // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-      /*   new CopyPlugin({
-         patterns: [
-          
-            //{ from: path.resolve("node_modules/@ai-lion/liondb/dist/prebuilds"), to: "service/prebuilds" },
-            //{ from: path.resolve("package.dist.json"), to: "package.json" },
-            //node_modules\node-analyzer\lib\dict
-         ],
-      }), */
       //new webpack.BannerPlugin({
       //   banner: "/*! https://github.com/ai-lion/liondb */",
       //   raw: true,
       //}),
+      new FileManagerPlugin({
+         // https://www.npmjs.com/package/filemanager-webpack-plugin
+         events: {
+            onStart: {
+               delete: [
+                  "dist-ext/dist"
+               ]
+            },
+            onEnd: {
+            /*    delete: [
+                  //"dist-ext/mds.js", //
+               ], */
+               //move: [{ source: "dist-ext/chrome/js/mds.js", destination: "dist-ext/mds.js" }],
+               copy: [
+                  { source: "package.dist.json", destination: "dist-ext/dist/package.json" },
+   
+               ],
+               //move: [{ source: "dist-ext/content-script-no.js", destination: "dist-ext/chrome-no/js/content-script.js" }],
+               //mkdir: ["/path/to/directory/", "/another/directory/"],
+               archive: [
+                  { source: "dist-ext/dist", destination: "dist-ext/" + appName + ".zip" },
+               ],
+            },
+         },
+      }),
       new webpack.BannerPlugin({
          banner: "#!/usr/bin/env node",
          raw: true,
-         include: [/cli/], //包含哪些文件需要添加头部
+         include: [/(cli|service)/], //包含哪些文件需要添加头部
       }),
    ],
    optimization: {
