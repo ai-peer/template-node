@@ -8,6 +8,7 @@ const config = {
    staticWWW: "",
    staticRootPath: "",
    apiVersion: "v2",
+   port:80,
 };
 
 module.exports = config;

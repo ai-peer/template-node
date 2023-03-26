@@ -1,5 +1,6 @@
 import logger from "../src/utils/logger";
 import App from "../src/app";
+import config from "../src/config";
 const yargs = require("yargs");
 
 process.on("uncaughtException", (e) => console.error("uncaughtException ", e.stack));
@@ -11,28 +12,10 @@ const opts = yargs
    .usage("Usage: $0")
    .wrap(Math.min(optimistUsageLength, yargs.terminalWidth()))
    .options({
-      expire_timeout: {
-         demandOption: false,
-         alias: "t",
-         describe: "timeout (milliseconds)",
-         default: 5000,
-      },
-      concurrent_limit: {
-         demandOption: false,
-         alias: "c",
-         describe: "concurrent limit",
-         default: 5000,
-      },
       alive_timeout: {
          demandOption: false,
          describe: "broken connection check timeout (milliseconds)",
          default: 60000,
-      },
-      key: {
-         demandOption: false,
-         alias: "k",
-         describe: "connection key",
-         default: "peerjs",
       },
       sslkey: {
          demandOption: false,
@@ -52,24 +35,15 @@ const opts = yargs
          demandOption: true,
          alias: "p",
          describe: "port",
-         default: 80,
+         default: config.port,
       },
       path: {
          demandOption: false,
          describe: "custom path",
          default: "/",
       },
-      allow_discovery: {
-         demandOption: false,
-         describe: "allow discovery of peers",
-      },
-      proxied: {
-         demandOption: false,
-         describe: "Set true if PeerServer stays behind a reverse proxy",
-         default: false,
-      },
-   })
-   .boolean("allow_discovery").argv;
+   }) //.boolean("allow_discovery")
+   .argv;
 
 (async () => {
    const app = new App();

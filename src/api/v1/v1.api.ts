@@ -3,7 +3,7 @@ import { BaseApi, router, Context } from "../../core/api";
 
 @tagsAll(["前端/节点管理"])
 export default class AppMedisApi extends BaseApi {
-   @router("get", "/api/ip")
+   @router("get", "/api/v1/ip")
    @summary("ip")
    async get(ctx: Context) {
       let ip = this.getClientIp();

@@ -57,7 +57,7 @@ function createEntity() {
    return content;
 }
 function createRouterApi(filter) {
-   let pattern = "src/api/**/*.{ts,js}";
+   let pattern = "src/api/**/*.api.{ts,js}";
    let list = searchModule(pattern);
    list = filter ? list.filter((v, i) => filter(v, i)) : list;
    console.info("createRouterApi", list);
