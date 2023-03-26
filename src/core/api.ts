@@ -5,7 +5,7 @@ import logger, { Logger } from "../utils/logger";
 
 export { router, Context, logger };
 
-export default class BaseApi {
+export  class BaseApi {
    public ctx: Context;
    logger: Logger = logger;
    getClientIp(): string {
@@ -16,3 +16,4 @@ export default class BaseApi {
       return this.ctx.get("user-agent");
    }
 }
+export default BaseApi;

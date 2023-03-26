@@ -5,16 +5,21 @@
  *
  * @format
  */
-
 const path = require("path");
 const fs = require("fs");
 const glob = require("glob");
+const config = require("../config");
 // const Base = require('../api/base').default;
 
 function createCompleted() {
    //let contentEntity = createEntity();
    console.info("===createCompleted");
-   let contentRouterApi = createRouterApi();
+   let contentRouterApi = createRouterApi((v) => {
+      if (/^V[\d]/i.test(v.name)) {
+         return new RegExp("^" + config.apiVersion, "i").test(v.name);
+      }
+      return true;
+   });
    //let conterSub = createSubscriber();
 
    let fpath = path.resolve(__dirname, "../completed.dist.ts");
@@ -51,9 +56,11 @@ function createEntity() {
    content += `export const entityList = [\r\n${list.map((v) => "\t" + prefix + v.name).join(",\r\n")}\r\n];\r\n`;
    return content;
 }
-function createRouterApi() {
+function createRouterApi(filter) {
    let pattern = "src/api/**/*.{ts,js}";
    let list = searchModule(pattern);
+   list = filter ? list.filter((v, i) => filter(v, i)) : list;
+   console.info("createRouterApi", list);
    let content = "";
    let prefix = "Api_";
 
@@ -86,7 +93,6 @@ function searchModule(pattern) {
          .replace(/([./])[a-zA-Z0-9]/g, (v) => v[1].toUpperCase());
       model = upperFirst(model);
       let modelPath = v.replace(/^\.?\/?src\//, "./");
-
       modes.push({
          name: model,
          path: modelPath.replace(/\.(ts|js)$/, ""),
@@ -97,8 +103,8 @@ function searchModule(pattern) {
 function upperFirst(str) {
    return str.substring(0, 1).toUpperCase() + str.substring(1);
 }
-module.exports = {
+/* module.exports = {
    searchModule,
    createCompleted,
-};
-//createCompleted();
+}; */
+createCompleted();

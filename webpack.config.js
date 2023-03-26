@@ -1,6 +1,5 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
-const { createCompleted } = require("./src/utils/build.dist");
-createCompleted();
+require("./src/utils/build.dist");
 
 const path = require("path");
 //const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -19,7 +18,7 @@ const config = {
    entry: {
       cli: {
          import: "./bin/start.ts",
-         filename: "dist/service.js",
+         filename: "dist/server.js",
       }
    },
    output: {
@@ -43,6 +42,10 @@ const config = {
    target: "node",
    externals: {
       //扩展不直接加入打包
+       //扩展不直接加入打包
+       "@ai-lion/liondb": "@ai-lion/liondb",
+       "@ai-lion/ipipe": "@ai-lion/ipipe",
+       hexoid: "hexoid",
    },
    devServer: {
       open: false,
@@ -127,7 +130,7 @@ const config = {
       new webpack.BannerPlugin({
          banner: "#!/usr/bin/env node",
          raw: true,
-         include: [/(cli|service)/], //包含哪些文件需要添加头部
+         include: [/(cli|server)/], //包含哪些文件需要添加头部
       }),
    ],
    optimization: {

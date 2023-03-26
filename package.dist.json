@@ -6,7 +6,11 @@
       "": "service.js"
    },
    "scripts": {},
-   "dependencies": {},
+   "dependencies": {
+      "@ai-lion/ipipe": "^2.0.10",
+      "@ai-lion/liondb": "^5.0.5",
+      "hexoid": "1.0.0"
+   },
    "devDependencies": {},
    "description": "demo",
    "files": ["dist", "package.json", "README.md"]
