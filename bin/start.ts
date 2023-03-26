@@ -12,6 +12,11 @@ const opts = yargs
    .usage("Usage: $0")
    .wrap(Math.min(optimistUsageLength, yargs.terminalWidth()))
    .options({
+      api_version: {
+         demandOption: false,
+         describe: "broken connection check timeout (milliseconds)",
+         default: config.apiVersion,
+      },
       alive_timeout: {
          demandOption: false,
          describe: "broken connection check timeout (milliseconds)",
@@ -42,9 +47,19 @@ const opts = yargs
          describe: "custom path",
          default: "/",
       },
-   }) //.boolean("allow_discovery")
-   .argv;
-
+   }).argv; //.boolean("allow_discovery")
+for (let key of Object.keys(opts)) {
+   let field = key
+      .split("_")
+      .map((v, i) => {
+         if (i < 1) return v;
+         return v.substring(0, 1).toUpperCase() + v.substring(1);
+      })
+      .join("");
+   if (field in config) {
+      if (opts[key]) config[field] = opts[key];
+   }
+}
 (async () => {
    const app = new App();
    let server = app.listen(opts.port, opts.host, () => {

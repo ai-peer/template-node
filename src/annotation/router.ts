@@ -15,7 +15,9 @@ const useSwaggerRouter = config.isDev;
 export const routerControllers: any = useSwaggerRouter ? new SwaggerRouter() : new Router();
 
 //const controllers = {};
-
+export type RouterOptions = {
+   version?: string;
+};
 //request: (method: string, path: string) => (target: any, name: string, descriptor: PropertyDescriptor) => PropertyDescriptor;
 /**
  * 路油器
@@ -23,10 +25,15 @@ export const routerControllers: any = useSwaggerRouter ? new SwaggerRouter() : n
  * @param path 路油路径
  * @param format 输出格式化
  */
-export default function router(method: string, path: string, format?: Function | object) {
+export default function router(method: string, path: string, options?: RouterOptions) {
+   options = Object.assign({ version: config.apiVersion }, options);
    return function (target: any, name: string, descriptor: PropertyDescriptor) {
       if (routerControllers[method.toLowerCase()]) {
-         routerControllers[method.toLowerCase()](path, async (ctx: Context, next: Function) => {
+         let shortPath = path.replace(new RegExp(`\/${config.apiVersion}\/`, ""), "/");
+         routerControllers[method.toLowerCase()](path, routerInstance);
+         routerControllers[method.toLowerCase()](shortPath, routerInstance);
+
+         async function routerInstance(ctx: Context, next: Function) {
             ctx.status = 200;
             try {
                let instance = new target.constructor();
@@ -54,7 +61,7 @@ export default function router(method: string, path: string, format?: Function |
                      //警告日志
                      logger.info("req warn ", `[${method}][${path}]`, res.msg, clientIp);
                   } */
-                  res = formatOutput(res, format);
+                  res = formatOutput(res);
                   ctx.body = res;
                } else if (ctx.body === undefined) {
                   ctx.status = 200;
@@ -71,10 +78,11 @@ export default function router(method: string, path: string, format?: Function |
                   msg: err.message,
                };
             }
-         });
+         }
       }
       logger.debug(`==router ${method} ${path}`, "==");
-      if (useSwaggerRouter) {//api文档生成
+      if (useSwaggerRouter) {
+         //api文档生成
          //let methodAnt = descriptor.value;
          let swaggerPath = path.replace(/\/:[0-9a-z]+/gi, (v) => {
             return "/{" + v.substring(2) + "}";

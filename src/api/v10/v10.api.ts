@@ -3,7 +3,7 @@ import { BaseApi, router, Context } from "../../core/api";
 
 @tagsAll(["前端/节点管理"])
 export default class AppMedisApi extends BaseApi {
-   @router("get", "/api/v2/ip")
+   @router("get", "/api/v10/ip", {})
    @summary("ip")
    async get(ctx: Context) {
       let ip = this.getClientIp();
@@ -13,7 +13,7 @@ export default class AppMedisApi extends BaseApi {
             ip: ip,
          });
       } else {
-         ctx.body = "v2>=" + ip;
+         ctx.body = "v10>=" + ip;
       }
    }
 }

@@ -7,7 +7,8 @@ const config = {
    loggerSize: "20m",
    staticWWW: "",
    staticRootPath: "",
-   apiVersion: "v2",
+   /** 使用api版本 */
+   apiVersion: "v1",
    port:80,
 };
 
