@@ -73,8 +73,8 @@ export default function router(method: string, path: string, format?: Function |
             }
          });
       }
-      logger.debug(`==router ${method} ${path}`);
-      if (useSwaggerRouter) {
+      logger.debug(`==router ${method} ${path}`, "==");
+      if (useSwaggerRouter) {//api文档生成
          //let methodAnt = descriptor.value;
          let swaggerPath = path.replace(/\/:[0-9a-z]+/gi, (v) => {
             return "/{" + v.substring(2) + "}";
