@@ -31,7 +31,7 @@ export default function router(method: string, path: string, options?: RouterOpt
       if (routerControllers[method.toLowerCase()]) {
          let shortPath = path.replace(new RegExp(`\/${config.apiVersion}\/`, ""), "/");
          routerControllers[method.toLowerCase()](path, routerInstance);
-         logger.info(`==router ${method} ${path}`);
+         logger.debug(`==router ${method} ${path}`);
 
          if (path != shortPath) {
             routerControllers[method.toLowerCase()](shortPath, routerInstance);
