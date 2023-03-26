@@ -1,5 +1,4 @@
 import logger from "../src/utils/logger";
-import App from "../src/app";
 import config from "../src/config";
 const yargs = require("yargs");
 
@@ -14,7 +13,7 @@ const opts = yargs
    .options({
       api_version: {
          demandOption: false,
-         describe: "broken connection check timeout (milliseconds)",
+         describe: "使用api版本",
          default: config.apiVersion,
       },
       alive_timeout: {
@@ -61,6 +60,8 @@ for (let key of Object.keys(opts)) {
    }
 }
 (async () => {
+   console.info(`=======start====use api_version=${config.apiVersion}`);
+   const App = require("../src/app");
    const app = new App();
    let server = app.listen(opts.port, opts.host, () => {
       let address: any = server.address();

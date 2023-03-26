@@ -31,7 +31,12 @@ export default function router(method: string, path: string, options?: RouterOpt
       if (routerControllers[method.toLowerCase()]) {
          let shortPath = path.replace(new RegExp(`\/${config.apiVersion}\/`, ""), "/");
          routerControllers[method.toLowerCase()](path, routerInstance);
-         routerControllers[method.toLowerCase()](shortPath, routerInstance);
+         logger.info(`==router ${method} ${path}`);
+
+         if (path != shortPath) {
+            routerControllers[method.toLowerCase()](shortPath, routerInstance);
+            logger.info(`==router ${method} ${shortPath} -> ${path}`);
+         }
 
          async function routerInstance(ctx: Context, next: Function) {
             ctx.status = 200;
@@ -80,7 +85,6 @@ export default function router(method: string, path: string, options?: RouterOpt
             }
          }
       }
-      logger.debug(`==router ${method} ${path}`, "==");
       if (useSwaggerRouter) {
          //api文档生成
          //let methodAnt = descriptor.value;

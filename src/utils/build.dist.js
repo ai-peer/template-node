@@ -15,9 +15,9 @@ function createCompleted() {
    //let contentEntity = createEntity();
    console.info("===createCompleted");
    let contentRouterApi = createRouterApi((v) => {
-      if (/^V[\d]/i.test(v.name)) {
+  /*     if (/^V[\d]/i.test(v.name)) {
          return new RegExp("^" + config.apiVersion, "i").test(v.name);
-      }
+      } */
       return true;
    });
    //let conterSub = createSubscriber();

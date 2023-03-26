@@ -15,7 +15,7 @@ import { Socket } from "net";
 import logger from "./utils/logger";
 import * as utils from "./utils";
 import { Context } from "./types";
-export default class App {
+export class App {
    private app: Koa;
    constructor() {
       let app = new Koa();
@@ -131,3 +131,5 @@ export function getOrigin(header, host?) {
    refer = up.protocol + "//" + up.host;
    return refer;
 }
+export default App;
+module.exports = App;
