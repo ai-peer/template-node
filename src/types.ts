@@ -9,6 +9,7 @@ export interface Context extends Koa.Context {
    service: ServiceInstance;
    model: ModelInstance;
    query: { [key: string]: any };
+   params: { [key: string]: any };
 }
 interface Request extends Koa.Request {
    body: any;
