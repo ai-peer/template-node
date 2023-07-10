@@ -3,7 +3,7 @@
    "version": "1.0.1",
    "license": "MIT",
    "bin": {
-      "": "service.js"
+      "app-demo": "service.js"
    },
    "scripts": {},
    "dependencies": {
