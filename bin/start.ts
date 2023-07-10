@@ -1,5 +1,17 @@
-import logger from "../src/utils/logger";
-import config from "../src/config";
+import * as utils from "@/utils";
+import path from "path";
+const env = utils.loadEnv(path.resolve(".env"));
+
+globalThis.env = env;
+globalThis.wait = (ttl: number = 1) => {
+   return new Promise((resolve) => {
+      setTimeout(() => resolve(), ttl);
+   });
+};
+import logger from "@/utils/logger";
+globalThis.logger = logger;
+/* import { Model } from "@ai-lion/liondb";
+Model.setApp(env.app); */
 const yargs = require("yargs");
 
 process.on("uncaughtException", (e) => console.error("uncaughtException ", e.stack));
@@ -14,7 +26,7 @@ const opts = yargs
       api_version: {
          demandOption: false,
          describe: "使用api版本",
-         default: config.apiVersion,
+         default: env.apiVersion,
       },
       alive_timeout: {
          demandOption: false,
@@ -33,13 +45,13 @@ const opts = yargs
          demandOption: false,
          alias: "H",
          describe: "host",
-         default: "0.0.0.0",
+         default: env.host,
       },
       port: {
          demandOption: true,
          alias: "p",
          describe: "port",
-         default: config.port,
+         default: env.port,
       },
       path: {
          demandOption: false,
@@ -55,12 +67,12 @@ for (let key of Object.keys(opts)) {
          return v.substring(0, 1).toUpperCase() + v.substring(1);
       })
       .join("");
-   if (field in config) {
-      if (opts[key]) config[field] = opts[key];
+   if (field in env) {
+      if (opts[key]) env[field] = opts[key];
    }
 }
 (async () => {
-   console.info(`=======start====use api_version=${config.apiVersion}`);
+   console.info(`=======start====use api_version=${env.apiVersion}`);
    const App = require("../src/app");
    const app = new App();
    let server = app.listen(opts.port, opts.host, () => {

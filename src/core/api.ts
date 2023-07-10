@@ -1,11 +1,11 @@
 import { getClientIp } from "../utils";
 import { Context } from "../types";
 import router from "../annotation/router";
-import logger, { Logger } from "../utils/logger";
+import logger from "../utils/logger";
 
 export { router, Context, logger };
 
-export  class BaseApi {
+export class BaseApi {
    public ctx: Context;
    logger: Logger = logger;
    getClientIp(): string {

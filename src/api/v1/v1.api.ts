@@ -8,12 +8,13 @@ export default class AppMedisApi extends BaseApi {
    async get(ctx: Context) {
       let ip = this.getClientIp();
       let contentType = ctx.get("content-type");
+      ctx.response.set("api-version", env.apiVersion);
       if (/json/i.test(contentType)) {
          ctx.body = JSON.stringify({
             ip: ip,
          });
       } else {
-         ctx.body = "v1>=" + ip;
+         ctx.body = ip;
       }
    }
 }

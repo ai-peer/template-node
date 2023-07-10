@@ -5,12 +5,11 @@ import path from "path";
 import Router from "koa-router";
 import { request as srequest, summary, body as sbody, responsesAll, tagsAll, SwaggerRouter } from "koa-swagger-decorator";
 import logger from "../utils/logger";
-import config from "../config";
 import Stream from "stream";
 
 /* export const routerControllers: Router = new SwaggerRouter();
 export const routerApis = new Router(); */
-const useSwaggerRouter = config.isDev;
+const useSwaggerRouter = env.DEV;
 
 export const routerControllers: any = useSwaggerRouter ? new SwaggerRouter() : new Router();
 
@@ -26,10 +25,10 @@ export type RouterOptions = {
  * @param format 输出格式化
  */
 export default function router(method: string, path: string, options?: RouterOptions) {
-   options = Object.assign({ version: config.apiVersion }, options);
+   options = Object.assign({ version: env.apiVersion }, options);
    return function (target: any, name: string, descriptor: PropertyDescriptor) {
       if (routerControllers[method.toLowerCase()]) {
-         let shortPath = path.replace(new RegExp(`\/${config.apiVersion}\/`, ""), "/");
+         let shortPath = path.replace(new RegExp(`\/${env.apiVersion}\/`, ""), "/");
          routerControllers[method.toLowerCase()](path, routerInstance);
          logger.debug(`==router ${method} ${path}`);
 
@@ -167,7 +166,7 @@ function _subMerge(source: any, target: any) {
    }
    return count > 0 ? res : source;
 }
-if (config.isDev && useSwaggerRouter && routerControllers instanceof SwaggerRouter) {
+if (env.DEV && useSwaggerRouter && routerControllers instanceof SwaggerRouter) {
    const apiJsonPath = "/api/swagger-json";
    routerControllers.get("/api/swagger-json", async (ctx: any, next) => {
       await next();

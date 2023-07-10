@@ -7,7 +7,6 @@ dayjs.extend(timezone); */
 
 import winston from "winston";
 import "winston-daily-rotate-file";
-import Config from "../config";
 import os from "os";
 import path from "path";
 import mkdirs from "mkdirs";
@@ -15,7 +14,7 @@ import pkg from "../../package.json";
 import querystring from "querystring";
 import dayjs from "dayjs";
 
-const logDir = Config.isDev ? path.resolve("logs") : path.join(os.homedir(), pkg.name.replace(/^.*[\/]/, ""), "logs");
+const logDir = global.env.DEV ? path.resolve("logs") : path.join(os.homedir(), pkg.name.replace(/^.*[\/]/, ""), "logs");
 mkdirs(logDir);
 console.info("logdir", logDir);
 
@@ -28,7 +27,7 @@ const logFormat = winston.format.combine(
 
 function buildWinLogger(serverName: string): Logger0 {
    const log = winston.createLogger({
-      level: Config.logger,
+      level: global.env.logger,
       format: logFormat,
       defaultMeta: { service: serverName },
       transports: [
@@ -37,22 +36,22 @@ function buildWinLogger(serverName: string): Logger0 {
             filename: path.join(logDir, `${serverName}-%DATE%.log`),
             level: "info",
             zippedArchive: true,
-            maxSize: Config.loggerSize,
-            maxFiles: Config.loggerDay,
+            maxSize: global.env.loggerSize,
+            maxFiles: global.env.loggerDay,
          }),
          new winston.transports.DailyRotateFile({
             filename: path.join(logDir, `log-%DATE%.log`),
             level: "info",
             zippedArchive: true,
-            maxSize: Config.loggerSize,
-            maxFiles: Config.loggerDay,
+            maxSize: global.env.loggerSize,
+            maxFiles: global.env.loggerDay,
          }),
          new winston.transports.DailyRotateFile({
             filename: path.join(logDir, `error-%DATE%.log`),
             level: "error",
             zippedArchive: true,
-            maxSize: Config.loggerSize,
-            maxFiles: Config.loggerDay,
+            maxSize: global.env.loggerSize,
+            maxFiles: global.env.loggerDay,
          }),
       ],
    });
@@ -68,7 +67,7 @@ function toString(args: any[]) {
       .join(" ");
    return r;
 }
-class Logger0 {
+class Logger0 implements Logger {
    logger: any; //winston.Logger;
    constructor(logger) {
       this.logger = logger;
@@ -101,11 +100,14 @@ const accept = buildWinLogger("accept");
 /* const user = console;
 const accept = console;
 const log = console; */
-export class Logger {
+export class LoggerX implements Logger {
    user = user;
    accept = accept;
    info(...args) {
       log.info(...args);
+   }
+   log(...args) {
+      log.log(...args);
    }
    warn(...args) {
       log.warn(...args);
@@ -118,6 +120,6 @@ export class Logger {
    }
 }
 
-const expLog = new Logger();
+const expLog = new LoggerX();
 
 export default expLog;
