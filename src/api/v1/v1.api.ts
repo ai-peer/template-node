@@ -1,5 +1,7 @@
 import { tagsAll, summary, query, body } from "koa-swagger-decorator";
 import { BaseApi, router, Context } from "../../core/api";
+import { Demo } from "~/src/model";
+import dayjs from "dayjs";
 
 @tagsAll(["前端/节点管理"])
 export default class AppMedisApi extends BaseApi {

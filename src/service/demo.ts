@@ -1,8 +1,8 @@
 import { Service } from "../core/service";
 
 export class DemoService extends Service {
-   get() {
-      return this.ctx.model.demo.get();
+   get(id: string) {
+      return this.ctx.model.demo.get(id);
    }
 }
 

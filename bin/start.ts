@@ -1,4 +1,7 @@
 import * as utils from "@/utils";
+import { Model } from "@ai-lion/liondb";
+import pkg from "../package.json";
+Model.setApp(pkg.name.replace(/^@+/, ""));
 import path from "path";
 const env = utils.loadEnv(path.resolve(".env"));
 

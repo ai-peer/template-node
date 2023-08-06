@@ -52,7 +52,7 @@ export default function router(method: string, path: string, options?: RouterOpt
                      msg: err.message,
                   };
                });
-
+               ctx.response.set("api-version", env.apiVersion);
                if (Buffer.isBuffer(res) || res instanceof Stream) {
                   ctx.type = ctx.type || "application/octet-stream";
                   ctx.body = res;

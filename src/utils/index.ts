@@ -1,5 +1,5 @@
 import Koa from "koa";
-import fs from 'fs';
+import fs from "fs";
 import EnvDefault from "@/env";
 
 export function getClientIp(ctx: Koa.Context): string {

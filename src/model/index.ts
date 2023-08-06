@@ -1,7 +1,7 @@
-import Demo, { SModel as ModelDemo } from "./demo";
+import { Demo, DemoModel } from "./demo";
 
 export default class ModelExport {
-   demo: ModelDemo = new ModelDemo();
+   demo: DemoModel = new DemoModel();
 }
 
 export { Demo };
