@@ -18,7 +18,7 @@ Model.setApp(env.app); */
 const yargs = require("yargs");
 
 process.on("uncaughtException", (e) => console.error("uncaughtException ", e.stack));
-process.on("unhandledRejection", (e: any) => logger.warn("unhandledRejection", e?.stack || ""));
+process.on("unhandledRejection", (e: any) => logger.warn("unhandledRejection", e.stack));
 
 const optimistUsageLength = 98;
 
